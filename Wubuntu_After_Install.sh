@@ -46,6 +46,15 @@ sudo apt install -y ./teamviewer.deb
 rm teamviewer.deb
 echo "TeamViewer instalado com sucesso!"
 
+# Efetuando configuração do Teamviewer
+# Aceitando licença do teamviewer
+sudo teamviewer licence accept
+# Habilitando respositorio estável do teamviewer
+sudo teamviewer repo stable
+# Habilitando o Teamviewer na inicialização do sistema
+sudo teamviewer daemon enable
+sudo teamviewer daemon start
+
 # Adiciona chave GPG do Anydesk
 sudo apt update
 sudo apt install -y ca-certificates curl apt-transport-https
@@ -62,10 +71,6 @@ echo "deb [signed-by=/etc/apt/keyrings/keys.anydesk.com.asc] https://deb.anydesk
 sudo apt update
 echo "Instalando Anydesk"
 sudo apt install -y anydesk
-
-# Instalaçao do Xorg Fix para não ter problemas de resoluções de tela ao usar saída VGA:
-echo "Instalando módulo Xorg Fix para resolver problemas de resoluções na saida VGA"
-sudo apt install -y xorg-modulepath-fix
 
 # Instalação do Antivirus:
 echo "Instalando antivirus ClamAV"
@@ -87,3 +92,13 @@ rm google-chrome-stable_current_amd64.deb
 # Instalação do Firefox
 echo "Instalando Firefox"
 sudo apt install -y firefox
+
+# Pergunta se deseja instalar o módulo xorg-modulepath
+read -p "Deseja instalar o xorg-modulepath-fix? (s/n) " resposta
+if [[ "$resposta" =~ ^[sSyY] ]]; then
+    # Instalaçao do Xorg Fix para não ter problemas de resoluções de tela ao usar saída VGA:
+    echo "Instalando módulo Xorg Fix para resolver problemas de resoluções na saida VGA"
+    sudo apt install -y xorg-modulepath-fix
+else
+    echo "Pulando instalação do xorg-modulepath-fix."
+fi
