@@ -48,7 +48,7 @@ echo "TeamViewer instalado com sucesso!"
 
 # Adiciona chave GPG do Anydesk
 sudo apt update
-sudo apt install ca-certificates curl apt-transport-https
+sudo apt install -y ca-certificates curl apt-transport-https
 echo "Adicionando chaves GPG do Anydesk"
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://keys.anydesk.com/repos/DEB-GPG-KEY -o /etc/apt/keyrings/keys.anydesk.com.asc
@@ -61,29 +61,29 @@ echo "deb [signed-by=/etc/apt/keyrings/keys.anydesk.com.asc] https://deb.anydesk
 # Update apt caches and install the AnyDesk client
 sudo apt update
 echo "Instalando Anydesk"
-sudo apt install anydesk
+sudo apt install -y anydesk
 
 # Instalaçao do Xorg Fix para não ter problemas de resoluções de tela ao usar saída VGA:
 echo "Instalando módulo Xorg Fix para resolver problemas de resoluções na saida VGA"
-sudo apt install xorg-modulepath-fix
+sudo apt install -y xorg-modulepath-fix
 
 # Instalação do Antivirus:
 echo "Instalando antivirus ClamAV"
-sudo apt install clamav clamtk clamav-daemon
+sudo apt install -y clamav clamtk clamav-daemon
 
 # Instalação do conjunto de "pacotes essenciais" para o chrome
 echo "Efetuando instalacao de pacotes essenciais para instalação do Google Chrome"
-sudo apt install curl apt-transport-https gdebi
+sudo apt install -y curl apt-transport-https gdebi
 # Download do Chrome Stable
 echo "Efetuando Download do Google Chrome"
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 # Instalação do chrome e após a instalação, a remoção do arquivo
 echo "Efetuando Instalação do Google Chrome"
-sudo apt install ./google-chrome-stable_current_amd64.deb -y
+sudo gdebi google-chrome* -y
 echo "Removendo instalador"
 rm google-chrome-stable_current_amd64.deb
 
 # Instalação do Firefox
 echo "Instalando Firefox"
-sudo apt install firefox -y
+sudo apt install -y firefox
