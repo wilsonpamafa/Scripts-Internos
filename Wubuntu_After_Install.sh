@@ -45,3 +45,34 @@ sudo apt install -y ./teamviewer.deb
 rm teamviewer.deb
 echo "TeamViewer instalado com sucesso!"
 
+# Adiciona chave GPG do Anydesk
+sudo apt update
+sudo apt install ca-certificates curl apt-transport-https
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://keys.anydesk.com/repos/DEB-GPG-KEY -o /etc/apt/keyrings/keys.anydesk.com.asc
+sudo chmod a+r /etc/apt/keyrings/keys.anydesk.com.asc
+
+# Adiciona o repositorio Anydesk
+echo "deb [signed-by=/etc/apt/keyrings/keys.anydesk.com.asc] https://deb.anydesk.com all main" | sudo tee /etc/apt/sources.list.d/anydesk-stable.list > /dev/null
+
+# Update apt caches and install the AnyDesk client
+sudo apt update
+sudo apt install anydesk
+
+# Instalaçao do Xorg Fix para não ter problemas de resoluções de tela ao usar saída VGA:
+sudo apt install xorg-modulepath-fix
+
+# Instalação do Antivirus:
+sudo apt install clamav clamtk clamav-daemon
+
+# Instalação do conjunto de "pacotes essenciais" para o chrome
+sudo apt install curl apt-transport-https gdebi
+# Download do Chrome Stable
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+# Instalação do chrome e após a instalação, a remoção do arquivo
+sudo apt install ./google-chrome-stable_current_amd64.deb -y
+rm google-chrome-stable_current_amd64.deb
+
+# Instalação do Firefox
+sudo apt install firefox -y
