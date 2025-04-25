@@ -72,6 +72,9 @@ sudo apt update
 echo "Instalando Anydesk"
 sudo apt install -y anydesk
 
+# Instalação do Unzip
+sudo apt install -y unzip
+
 # Instalação do Antivirus:
 echo "Instalando antivirus ClamAV"
 sudo apt install -y clamav clamtk clamav-daemon
@@ -112,6 +115,17 @@ else
     echo "pulando processo de atualização"
 fi
 
+# Pergunta se deseja instalar o Holyrics
+read -p "Deseja baixar e instalar o Holyrics? (s/n) " holyrics
+if [[ "$holyrics" =~ ^[sSyY] ]]; then
+    curl -L https://www.holyrics.com.br/download/app/download-setup-linux.php --output holyrics.zip
+    unzip holyrics.zip
+    ###Continuar
+else
+    echo "Pulando instalação do Holyrics"
+fi
+
+
 # Pergunta se deseja instalar o módulo xorg-modulepath
 echo "Utilize o xorg-modulepath-fix somente se tiver problemas de resolução de tela"
 read -p "Deseja instalar o xorg-modulepath-fix? (s/n) " resposta
@@ -122,3 +136,35 @@ if [[ "$resposta" =~ ^[sSyY] ]]; then
 else
     echo "Pulando instalação do xorg-modulepath-fix."
 fi
+
+# Pergunta se é necessário adicionar um novo usuário ou não
+while true; do
+    read -p "Deseja adicionar um novo usuário? (s/n) " newuser
+        case "$newuser" in
+        [sSyY]* )
+            read -p "Digite o Nome Completo: " fullname
+            read -p "Digite o username desejado: " username
+            read -p "Digite a senha desejada: " userpass
+
+            sudo useradd -m -s "/bin/bash" -c "$fullname" "$username"
+
+            echo "$username:$userpass" | sudo chpasswd
+            echo -e "\nUsuário $NOME_USUARIO criado com sucesso!"
+
+            read -p "Deseja tornar o usuario administrador? (sudo)" sudo
+                if [[ "$sudo" =~ ^[sSyY] ]]; then
+                    sudo usermod -aG sudo $username
+                else
+                    echo "Usuario sem poderes de elevacao."
+                fi
+                break
+                ;;
+        [nN]* )
+            echo "Pulando criacao de contas."
+           break
+           ;;
+        * )
+        echo "Por Favor, escolher s (sim) ou n (não)."
+        ;;
+        esac
+done
