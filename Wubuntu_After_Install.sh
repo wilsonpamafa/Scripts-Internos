@@ -93,7 +93,27 @@ rm google-chrome-stable_current_amd64.deb
 echo "Instalando Firefox"
 sudo apt install -y firefox
 
+# Instalação do GLPI
+# verifica a ultima versão do GPLI
+REPOGLPI="glpi-project/glpi-agent"
+LATEST_VERSION=$(curl -s https://api.github.com/repos/$REPOGLPI/releases/latest | grep -oP '"tag_name": "\K[^"]+')
+echo "Localizada versão $LATEST_VERSION..."
+PL_URL="https://github.com/$REPOGLPI/releases/download/$LATEST_VERSION/glpi-agent-${LATEST_VERSION}-linux-installer.pl"
+wget -O glpi-agent.pl "$PL_URL"
+read -p "Digite a URL do agente GLPI:" GLPI_URL
+sudo perl glpi-agent.pl -s $GLPI_URL
+echo "GLPI_$LATEST_VERSION Instalado com sucesso..."
+rm glpi-agent.pl
+
+read -p "Deseja rodar o GLPI agora? (s/n) " rodarglpi
+if [[ "$rodarglpi" =~ ^[sSyY] ]]; then
+    sudo  glpi-agent
+else
+    echo "pulando processo de atualização"
+fi
+
 # Pergunta se deseja instalar o módulo xorg-modulepath
+echo "Utilize o xorg-modulepath-fix somente se tiver problemas de resolução de tela"
 read -p "Deseja instalar o xorg-modulepath-fix? (s/n) " resposta
 if [[ "$resposta" =~ ^[sSyY] ]]; then
     # Instalaçao do Xorg Fix para não ter problemas de resoluções de tela ao usar saída VGA:
