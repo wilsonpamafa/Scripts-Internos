@@ -120,7 +120,8 @@ read -p "Deseja baixar e instalar o Holyrics? (s/n) " holyrics
 if [[ "$holyrics" =~ ^[sSyY] ]]; then
     curl -L https://www.holyrics.com.br/download/app/download-setup-linux.php --output holyrics.zip
     unzip holyrics.zip
-    ###Continuar
+    sudo chmod +x *olyrics*.run
+    sudo ./*olyrics*.run -y
 else
     echo "Pulando instalação do Holyrics"
 fi
