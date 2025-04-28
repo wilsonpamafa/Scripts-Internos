@@ -88,7 +88,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 # Instalação do chrome e após a instalação, a remoção do arquivo
 echo "Efetuando Instalação do Google Chrome"
-sudo gdebi google-chrome* -y
+sudo apt install google-chrome* -y
 echo "Removendo instalador"
 rm google-chrome-stable_current_amd64.deb
 
