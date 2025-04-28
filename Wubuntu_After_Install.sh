@@ -97,23 +97,28 @@ echo "Instalando Firefox"
 sudo apt install -y firefox
 
 # Instalação do GLPI
-# verifica a ultima versão do GPLI
-REPOGLPI="glpi-project/glpi-agent"
-LATEST_VERSION=$(curl -s https://api.github.com/repos/$REPOGLPI/releases/latest | grep -oP '"tag_name": "\K[^"]+')
-echo "Localizada versão $LATEST_VERSION..."
-PL_URL="https://github.com/$REPOGLPI/releases/download/$LATEST_VERSION/glpi-agent-${LATEST_VERSION}-linux-installer.pl"
-wget -O glpi-agent.pl "$PL_URL"
-read -p "Digite a URL do agente GLPI:" GLPI_URL
-sudo perl glpi-agent.pl -s $GLPI_URL
-echo "GLPI_$LATEST_VERSION Instalado com sucesso..."
-rm glpi-agent.pl
+read -p "Deseja rodar o GLPI agora? (s/n) " setupglpi
+    if [[ "$setupglpi" =~ ^[sSyY] ]]; then
+        # verifica a ultima versão do GPLI
+        REPOGLPI="glpi-project/glpi-agent"
+        LATEST_VERSION=$(curl -s https://api.github.com/repos/$REPOGLPI/releases/latest | grep -oP '"tag_name": "\K[^"]+')
+        echo "Localizada versão $LATEST_VERSION..."
+        PL_URL="https://github.com/$REPOGLPI/releases/download/$LATEST_VERSION/glpi-agent-${LATEST_VERSION}-linux-installer.pl"
+        wget -O glpi-agent.pl "$PL_URL"
+        read -p "Digite a URL do agente GLPI:" GLPI_URL
+        sudo perl glpi-agent.pl -s $GLPI_URL
+        echo "GLPI_$LATEST_VERSION Instalado com sucesso..."
+        rm glpi-agent.pl
 
-read -p "Deseja rodar o GLPI agora? (s/n) " rodarglpi
-if [[ "$rodarglpi" =~ ^[sSyY] ]]; then
-    sudo  glpi-agent
-else
-    echo "pulando processo de atualização"
-fi
+        read -p "Deseja rodar o GLPI agora? (s/n) " rodarglpi
+            if [[ "$rodarglpi" =~ ^[sSyY] ]]; then
+                sudo  glpi-agent
+            else
+                echo "pulando processo de atualização"
+            fi
+    else
+        echo "Pulando instalação do GLPI."
+    fi
 
 # Pergunta se deseja instalar o Holyrics
 read -p "Deseja baixar e instalar o Holyrics? (s/n) " holyrics
